@@ -19,18 +19,18 @@
 package org.apache.zookeeper.test;
 
 import org.apache.zookeeper.ZKTestCase;
-import org.apache.zookeeper.client.ConnectStringParser;
+import org.apache.zookeeper.client.NormalConnectStringParser;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ConnectStringParserTest extends ZKTestCase{
+public class NormalConnectStringParserTest extends ZKTestCase{
 
     @Test
     public void testSingleServerChrootPath(){
         String chrootPath = "/hallo/welt";
         String servers = "10.10.10.1";
         assertChrootPath(chrootPath,
-                new ConnectStringParser(servers+chrootPath));
+                new NormalConnectStringParser(servers+chrootPath));
     }
 
     @Test
@@ -38,13 +38,13 @@ public class ConnectStringParserTest extends ZKTestCase{
         String chrootPath = "/hallo/welt";
         String servers = "10.10.10.1,10.10.10.2";
         assertChrootPath(chrootPath,
-                new ConnectStringParser(servers+chrootPath));
+                new NormalConnectStringParser(servers+chrootPath));
     }
 
     @Test
     public void testParseServersWithoutPort(){
         String servers = "10.10.10.1,10.10.10.2";
-        ConnectStringParser parser = new ConnectStringParser(servers);
+        NormalConnectStringParser parser = new NormalConnectStringParser(servers);
 
         Assert.assertEquals("10.10.10.1", parser.getServerAddresses().get(0).getHostName());
         Assert.assertEquals("10.10.10.2", parser.getServerAddresses().get(1).getHostName());
@@ -53,7 +53,7 @@ public class ConnectStringParserTest extends ZKTestCase{
     @Test
     public void testParseServersWithPort(){
         String servers = "10.10.10.1:112,10.10.10.2:110";
-        ConnectStringParser parser = new ConnectStringParser(servers);
+        NormalConnectStringParser parser = new NormalConnectStringParser(servers);
 
         Assert.assertEquals("10.10.10.1", parser.getServerAddresses().get(0).getHostName());
         Assert.assertEquals("10.10.10.2", parser.getServerAddresses().get(1).getHostName());
@@ -62,7 +62,7 @@ public class ConnectStringParserTest extends ZKTestCase{
         Assert.assertEquals(110, parser.getServerAddresses().get(1).getPort());
     }
 
-    private void assertChrootPath(String expected, ConnectStringParser parser){
+    private void assertChrootPath(String expected, NormalConnectStringParser parser){
         Assert.assertEquals(expected, parser.getChrootPath());
     }
 }
